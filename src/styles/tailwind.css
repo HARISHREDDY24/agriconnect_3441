@@ -1,0 +1,150 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+/* Custom CSS Variables */
+:root {
+  /* Primary Colors */
+  --color-primary: #16a34a; /* green-600 */
+  --color-primary-light: #22c55e; /* green-500 */
+  --color-primary-dark: #15803d; /* green-700 */
+  
+  /* Neutral Colors */
+  --color-background: #ffffff; /* white */
+  --color-surface: #f9fafb; /* gray-50 */
+  --color-border: #e5e7eb; /* gray-200 */
+  --color-text-primary: #111827; /* gray-900 */
+  --color-text-secondary: #4b5563; /* gray-600 */
+  --color-text-tertiary: #9ca3af; /* gray-400 */
+  
+  /* Semantic Colors */
+  --color-success: #059669; /* emerald-600 */
+  --color-warning: #f59e0b; /* amber-500 */
+  --color-danger: #dc2626; /* red-600 */
+  --color-info: #2563eb; /* blue-600 */
+  --color-earth: #92400e; /* amber-800 */
+  --color-water: #0891b2; /* cyan-600 */
+}
+
+/* Animation Keyframes */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Custom Animation Classes */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+/* Custom Component Classes */
+@layer components {
+  /* Button Styles */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  
+  .btn-primary {
+    @apply bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] focus-visible:ring-[var(--color-primary)];
+  }
+  
+  .btn-secondary {
+    @apply border border-[var(--color-primary)] text-[var(--color-primary)] bg-transparent hover:bg-[var(--color-primary)] hover:text-white focus-visible:ring-[var(--color-primary)];
+  }
+  
+  .btn-tertiary {
+    @apply text-[var(--color-primary)] hover:underline focus-visible:ring-[var(--color-primary)];
+  }
+  
+  .btn-success {
+    @apply bg-[var(--color-success)] text-white  focus-visible:ring-[var(--color-success)];
+  }
+  
+  .btn-danger {
+    @apply bg-[var(--color-danger)] text-white  focus-visible:ring-[var(--color-danger)];
+  }
+  
+  /* Input Styles */
+  .input {
+    @apply flex h-10 w-full rounded-md border border-[var(--color-border)] bg-white px-3 py-2 text-sm placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  
+  /* Card Styles */
+  .card {
+    @apply rounded-lg bg-white shadow-sm border border-[var(--color-border)];
+  }
+  
+  .card-interactive {
+    @apply transition-all duration-200 hover:shadow-md hover:scale-[1.02];
+  }
+  
+  /* Dropdown Styles */
+  .dropdown-content {
+    @apply absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none;
+  }
+  
+  .dropdown-item {
+    @apply relative cursor-pointer select-none py-2 pl-3 pr-9 text-[var(--color-text-primary)] hover:bg-[var(--color-surface)];
+  }
+  
+  .dropdown-item-active {
+    @apply bg-[var(--color-primary-light)] text-white;
+  }
+}
