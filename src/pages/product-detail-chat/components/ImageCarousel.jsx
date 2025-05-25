@@ -9,7 +9,6 @@ const ImageCarousel = ({ images }) => {
   const [touchEnd, setTouchEnd] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Auto-advance carousel
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isAnimating) {
@@ -38,7 +37,6 @@ const ImageCarousel = ({ images }) => {
     setCurrentIndex(index);
   };
 
-  // Touch handlers for swipe
   const handleTouchStart = (e) => {
     setTouchStart(e.targetTouches[0].clientX);
   };
@@ -49,12 +47,10 @@ const ImageCarousel = ({ images }) => {
 
   const handleTouchEnd = () => {
     if (touchStart - touchEnd > 50) {
-      // Swipe left
       handleNext();
     }
 
     if (touchStart - touchEnd < -50) {
-      // Swipe right
       handlePrev();
     }
   };
@@ -85,7 +81,6 @@ const ImageCarousel = ({ images }) => {
         </AnimatePresence>
       </div>
 
-      {/* Navigation arrows */}
       <button
         onClick={handlePrev}
         className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 shadow-md hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-primary"
@@ -101,7 +96,6 @@ const ImageCarousel = ({ images }) => {
         <Icon name="ChevronRight" size={24} />
       </button>
 
-      {/* Dots indicator */}
       <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
         {images.map((_, index) => (
           <button
@@ -117,7 +111,6 @@ const ImageCarousel = ({ images }) => {
         ))}
       </div>
 
-      {/* Image counter */}
       <div className="absolute top-4 right-4 bg-black bg-opacity-60 text-white text-sm px-2 py-1 rounded-md">
         {currentIndex + 1} / {images.length}
       </div>

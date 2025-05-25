@@ -6,7 +6,6 @@ const AnimatedHero = ({ onLogin, onSignup }) => {
   return (
     <section className="pt-24 pb-16 md:pt-32 md:pb-24 relative">
       <div className="grid md:grid-cols-2 gap-12 items-center">
-        {/* Hero content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -89,7 +88,6 @@ const AnimatedHero = ({ onLogin, onSignup }) => {
           </motion.div>
         </motion.div>
         
-        {/* Hero image */}
         <motion.div
           className="relative"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -106,7 +104,6 @@ const AnimatedHero = ({ onLogin, onSignup }) => {
               }}
             />
             
-            {/* Floating elements */}
             <motion.div
               className="absolute -top-6 -left-6 bg-white p-4 rounded-lg shadow-md flex items-center"
               initial={{ opacity: 0, y: 20 }}
@@ -137,7 +134,6 @@ const AnimatedHero = ({ onLogin, onSignup }) => {
             </motion.div>
           </div>
           
-          {/* Background decoration */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full -z-10">
             <motion.div
               className="absolute top-0 right-0 w-64 h-64 bg-primary bg-opacity-10 rounded-full"

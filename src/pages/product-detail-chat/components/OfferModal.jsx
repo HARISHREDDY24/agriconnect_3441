@@ -25,22 +25,18 @@ const OfferModal = ({ product, onClose, isOnline }) => {
     
     setIsSubmitting(true);
     
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setShowSuccess(true);
       
-      // Close modal after showing success
       setTimeout(() => {
         onClose();
       }, 2000);
     }, 1500);
   };
 
-  // Calculate percentage of original price
   const percentage = Math.round((offerAmount / product.price) * 100);
   
-  // Determine color based on percentage
   const getPercentageColor = () => {
     if (percentage < 85) return "text-danger";
     if (percentage < 95) return "text-warning";

@@ -17,7 +17,6 @@ const ProcessingAnimation = ({ image, onCancel }) => {
           className="w-full h-full object-cover"
         />
         
-        {/* Scanning animation overlay */}
         <motion.div
           className="absolute top-0 left-0 w-full h-1 bg-primary bg-opacity-70"
           animate={{ top: ["0%", "100%", "0%"] }}
@@ -28,7 +27,6 @@ const ProcessingAnimation = ({ image, onCancel }) => {
           }}
         />
         
-        {/* Particle effects */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(10)].map((_, i) => (
             <motion.div
@@ -54,7 +52,6 @@ const ProcessingAnimation = ({ image, onCancel }) => {
           ))}
         </div>
         
-        {/* Processing overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
           <div className="text-center">
             <motion.div

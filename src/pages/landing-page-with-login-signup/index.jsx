@@ -12,16 +12,12 @@ const LandingPage = () => {
   const [activeTab, setActiveTab] = useState("login");
   const navigate = useNavigate();
 
-  // Mock authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
-  // Mock login function
   const handleLogin = (credentials) => {
-    // In a real app, this would call Firebase authentication
     console.log("Login attempt with:", credentials);
     
-    // Mock successful login after validation
     if (credentials.email === "farmer@example.com" && credentials.password === "Password123") {
       setUser({
         name: "John Farmer",
@@ -31,7 +27,6 @@ const LandingPage = () => {
       setIsAuthenticated(true);
       setShowModal(false);
       
-      // Redirect based on user type
       setTimeout(() => {
         navigate("/marketplace-dashboard");
       }, 1000);
@@ -45,12 +40,9 @@ const LandingPage = () => {
     };
   };
 
-  // Mock signup function
   const handleSignup = (userData) => {
-    // In a real app, this would call Firebase authentication
     console.log("Signup attempt with:", userData);
     
-    // Mock successful signup
     setUser({
       name: userData.name,
       email: userData.email,
@@ -59,7 +51,6 @@ const LandingPage = () => {
     setIsAuthenticated(true);
     setShowModal(false);
     
-    // Redirect based on user type
     setTimeout(() => {
       navigate("/marketplace-dashboard");
     }, 1000);
@@ -67,7 +58,6 @@ const LandingPage = () => {
     return { success: true };
   };
 
-  // Mock logout function
   const handleLogout = () => {
     setUser(null);
     setIsAuthenticated(false);
@@ -75,10 +65,8 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-hidden relative">
-      {/* Background animations */}
       <BackgroundAnimations />
       
-      {/* Navigation bar */}
       <NavigationBar 
         isAuthenticated={isAuthenticated} 
         user={user} 
@@ -93,7 +81,6 @@ const LandingPage = () => {
         onLogout={handleLogout}
       />
       
-      {/* Main content */}
       <main className="container mx-auto px-4 pt-16 pb-24 relative z-10">
         <AnimatedHero 
           onLogin={() => {
@@ -106,7 +93,6 @@ const LandingPage = () => {
           }}
         />
         
-        {/* Features section */}
         <section id="features" className="py-16">
           <div className="text-center mb-12">
             <motion.h2 
@@ -136,7 +122,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* How it works section */}
         <section id="how-it-works" className="py-16">
           <div className="text-center mb-12">
             <motion.h2 
@@ -166,7 +151,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* Testimonials section */}
         <section id="testimonials" className="py-16">
           <div className="text-center mb-12">
             <motion.h2 
@@ -196,7 +180,6 @@ const LandingPage = () => {
           </div>
         </section>
         
-        {/* CTA section */}
         <section className="py-16">
           <motion.div 
             className="bg-primary rounded-xl p-8 md:p-12 text-white text-center"
@@ -223,7 +206,6 @@ const LandingPage = () => {
         </section>
       </main>
       
-      {/* Footer */}
       <footer className="bg-surface py-12 relative z-10">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
@@ -281,7 +263,6 @@ const LandingPage = () => {
         </div>
       </footer>
       
-      {/* Login/Signup Modal */}
       <AnimatePresence>
         {showModal && (
           <LoginModal 
@@ -298,7 +279,6 @@ const LandingPage = () => {
   );
 };
 
-// Feature Card Component
 const FeatureCard = ({ feature, index }) => {
   return (
     <motion.div 
@@ -317,7 +297,6 @@ const FeatureCard = ({ feature, index }) => {
   );
 };
 
-// Step Item Component
 const StepItem = ({ step, index }) => {
   return (
     <motion.div 
@@ -338,7 +317,6 @@ const StepItem = ({ step, index }) => {
   );
 };
 
-// Testimonial Card Component
 const TestimonialCard = ({ testimonial, index }) => {
   return (
     <motion.div 
@@ -377,7 +355,6 @@ const TestimonialCard = ({ testimonial, index }) => {
   );
 };
 
-// Mock data
 const features = [
   {
     icon: "Leaf",

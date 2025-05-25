@@ -133,7 +133,6 @@ const AddListingButton = ({ showForm, onToggle, onAddProduct }) => {
               <div className="p-4 max-h-[80vh] overflow-y-auto">
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    {/* Name Field */}
                     <div>
                       <label className="block text-sm font-medium mb-1">Product Name*</label>
                       <input
@@ -146,7 +145,6 @@ const AddListingButton = ({ showForm, onToggle, onAddProduct }) => {
                       {errors.name && <p className="text-danger text-xs mt-1">{errors.name}</p>}
                     </div>
 
-                    {/* Category Field */}
                     <div>
                       <label className="block text-sm font-medium mb-1">Category*</label>
                       <select
@@ -166,7 +164,6 @@ const AddListingButton = ({ showForm, onToggle, onAddProduct }) => {
                       {errors.category && <p className="text-danger text-xs mt-1">{errors.category}</p>}
                     </div>
 
-                    {/* Price Field */}
                     <div>
                       <label className="block text-sm font-medium mb-1">Price (₹)*</label>
                       <input
@@ -181,7 +178,6 @@ const AddListingButton = ({ showForm, onToggle, onAddProduct }) => {
                       {errors.price && <p className="text-danger text-xs mt-1">{errors.price}</p>}
                     </div>
 
-                    {/* Quantity & Unit Fields */}
                     <div className="grid grid-cols-2 gap-2">
                       <div>
                         <label className="block text-sm font-medium mb-1">Quantity*</label>
@@ -214,7 +210,6 @@ const AddListingButton = ({ showForm, onToggle, onAddProduct }) => {
                       </div>
                     </div>
 
-                    {/* Description Field */}
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium mb-1">Description*</label>
                       <textarea
@@ -228,7 +223,6 @@ const AddListingButton = ({ showForm, onToggle, onAddProduct }) => {
                       {errors.description && <p className="text-danger text-xs mt-1">{errors.description}</p>}
                     </div>
 
-                    {/* Image Upload */}
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium mb-1">Product Image*</label>
                       <div className={`border-2 border-dashed rounded-lg p-4 ${errors.image ? "border-danger" : "border-border"

@@ -7,7 +7,6 @@ const NavigationBar = ({ isAuthenticated, user, onLogin, onSignup, onLogout }) =
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -34,7 +33,6 @@ const NavigationBar = ({ isAuthenticated, user, onLogin, onSignup, onLogout }) =
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
           <Link to="/" className="flex items-center">
             <div className="flex items-center">
               <Icon name="Leaf" size={28} className="text-primary mr-2" />
@@ -44,11 +42,9 @@ const NavigationBar = ({ isAuthenticated, user, onLogin, onSignup, onLogout }) =
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <NavLinks />
 
-            {/* Auth buttons */}
             <div className="flex items-center space-x-4">
               {isAuthenticated ? (
                 <div className="flex items-center">
@@ -98,7 +94,6 @@ const NavigationBar = ({ isAuthenticated, user, onLogin, onSignup, onLogout }) =
             </div>
           </div>
 
-          {/* Mobile menu button */}
           <button
             className="md:hidden text-text-primary"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -108,7 +103,6 @@ const NavigationBar = ({ isAuthenticated, user, onLogin, onSignup, onLogout }) =
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMobileMenuOpen && (
         <motion.div
           className="md:hidden bg-white border-t border-border"
@@ -120,7 +114,6 @@ const NavigationBar = ({ isAuthenticated, user, onLogin, onSignup, onLogout }) =
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
             <MobileNavLinks setIsMobileMenuOpen={setIsMobileMenuOpen} />
 
-            {/* Auth buttons */}
             <div className="pt-4 border-t border-border flex flex-col space-y-3">
               {isAuthenticated ? (
                 <>
@@ -191,7 +184,6 @@ const NavigationBar = ({ isAuthenticated, user, onLogin, onSignup, onLogout }) =
   );
 };
 
-// Desktop Nav Links
 const NavLinks = () => {
   return (
     <>
@@ -217,7 +209,6 @@ const NavLinks = () => {
   );
 };
 
-// Mobile Nav Links
 const MobileNavLinks = ({ setIsMobileMenuOpen }) => {
   return (
     <>

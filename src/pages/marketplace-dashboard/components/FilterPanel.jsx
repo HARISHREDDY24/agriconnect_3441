@@ -39,7 +39,6 @@ const FilterPanel = ({ filters, onFilterChange, locationPermission, requestLocat
     }
   };
 
-  // Animation variants
   const sectionVariants = {
     open: { 
       height: "auto", 
@@ -69,7 +68,6 @@ const FilterPanel = ({ filters, onFilterChange, locationPermission, requestLocat
     <div className="bg-white rounded-lg shadow-sm border border-border p-4">
       <h2 className="text-h4 font-medium text-text-primary mb-4">Filters</h2>
       
-      {/* Category filter */}
       <div className="mb-4 border-b border-border pb-4">
         <button 
           className="flex justify-between items-center w-full text-left font-medium mb-2"
@@ -105,7 +103,6 @@ const FilterPanel = ({ filters, onFilterChange, locationPermission, requestLocat
         </motion.div>
       </div>
       
-      {/* Location filter */}
       <div className="mb-4 border-b border-border pb-4">
         <button 
           className="flex justify-between items-center w-full text-left font-medium mb-2"
@@ -156,7 +153,6 @@ const FilterPanel = ({ filters, onFilterChange, locationPermission, requestLocat
         </motion.div>
       </div>
       
-      {/* Price range filter */}
       <div className="mb-4">
         <button 
           className="flex justify-between items-center w-full text-left font-medium mb-2"
@@ -240,7 +236,6 @@ const FilterPanel = ({ filters, onFilterChange, locationPermission, requestLocat
         </motion.div>
       </div>
       
-      {/* Reset filters button */}
       <button
         onClick={() => onFilterChange({
           cropType: "all",
@@ -256,7 +251,6 @@ const FilterPanel = ({ filters, onFilterChange, locationPermission, requestLocat
   );
 };
 
-// Mock data
 const categories = [
   { label: "All Categories", value: "all" },
   { label: "Grains", value: "grains" },

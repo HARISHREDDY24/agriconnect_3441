@@ -18,14 +18,12 @@ const CropDoctorAIAnalysis = () => {
     setSelectedImage(file);
     setUploadProgress(0);
 
-    // Simulate upload progress
     const interval = setInterval(() => {
       setUploadProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           setCurrentState("processing");
 
-          // Simulate processing time
           setTimeout(() => {
             const results = {
               ...mockAnalysisResults,

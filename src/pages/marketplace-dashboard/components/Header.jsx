@@ -76,9 +76,7 @@ const Header = () => {
             </NavLink>
           </nav>
 
-          {/* User Actions */}
           <div className="flex items-center gap-2">
-            {/* Notifications */}
             <div className="relative">
               <button
                 onClick={toggleNotifications}
@@ -139,7 +137,6 @@ const Header = () => {
               )}
             </div>
 
-            {/* User Menu */}
             <div className="relative">
               <button
                 onClick={toggleMenu}
@@ -192,7 +189,6 @@ HARISH                </span>
               )}
             </div>
 
-            {/* Mobile Menu Button */}
             <button
               className="p-2 rounded-md md:hidden hover:bg-surface transition-colors"
               onClick={() => {
@@ -206,7 +202,6 @@ HARISH                </span>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
@@ -253,7 +248,6 @@ HARISH                </span>
   );
 };
 
-// Mock Data
 const notifications = [
   {
     id: 1,
@@ -286,7 +280,6 @@ const notifications = [
 ];
 
 const menuItems = [
-  // { label: "Profile", icon: "User", path: "/profile" },
   { label: "My Listings", icon: "Package", path: "/my-listings" },
   { label: "Orders", icon: "ShoppingCart", path: "/orders" },
   { label: "Settings", icon: "Settings", path: "/settings" },

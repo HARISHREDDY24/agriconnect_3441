@@ -24,7 +24,6 @@ const CustomTooltip = ({ active, payload, label }) => {
 const PriceChart = ({ data }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  // Calculate min and max for YAxis domain
   const prices = data.map(item => item.price);
   const minPrice = Math.min(...prices) * 0.95; // 5% below min
   const maxPrice = Math.max(...prices) * 1.05; // 5% above max

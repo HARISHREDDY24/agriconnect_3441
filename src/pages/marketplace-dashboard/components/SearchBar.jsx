@@ -17,7 +17,6 @@ const SearchBar = ({ onSearch }) => {
     e.preventDefault();
     if (query.trim()) {
       onSearch(query);
-      // Add to recent searches if not already there
       if (!recentSearches.includes(query.toLowerCase())) {
         setRecentSearches([query.toLowerCase(), ...recentSearches.slice(0, 4)]);
       }
@@ -90,7 +89,6 @@ const SearchBar = ({ onSearch }) => {
         </button>
       </motion.form>
 
-      {/* Recent searches dropdown */}
       <AnimatePresence>
         {isFocused && recentSearches.length > 0 && (
           <motion.div

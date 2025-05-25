@@ -24,16 +24,13 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
   }, []);
   
   
-  // Error states
   const [loginError, setLoginError] = useState("");
   const [signupError, setSignupError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   
-  // Loading states
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
   
-  // Close modal on escape key
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -43,12 +40,10 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
   
-  // Handle login form change
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
     setLoginForm((prev) => ({ ...prev, [name]: value }));
     
-    // Clear errors when typing
     if (loginError) setLoginError("");
     if (fieldErrors[name]) {
       setFieldErrors((prev) => {
@@ -59,12 +54,10 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     }
   };
   
-  // Handle signup form change
   const handleSignupChange = (e) => {
     const { name, value } = e.target;
     setSignupForm((prev) => ({ ...prev, [name]: value }));
     
-    // Clear errors when typing
     if (signupError) setSignupError("");
     if (fieldErrors[name]) {
       setFieldErrors((prev) => {
@@ -75,7 +68,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     }
   };
   
-  // Validate login form
   const validateLoginForm = () => {
     const errors = {};
     
@@ -93,7 +85,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     return Object.keys(errors).length === 0;
   };
   
-  // Validate signup form
   const validateSignupForm = () => {
     const errors = {};
     
@@ -123,7 +114,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     return Object.keys(errors).length === 0;
   };
   
-  // Handle login submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     
@@ -132,7 +122,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     setIsLoggingIn(true);
     
     try {
-      // In a real app, this would call Firebase authentication
       const result = onLogin(loginForm);
       
       if (!result.success) {
@@ -146,7 +135,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     }
   };
   
-  // Handle signup submission
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
     
@@ -155,7 +143,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     setIsSigningUp(true);
     
     try {
-      // In a real app, this would call Firebase authentication
       const result = onSignup(signupForm);
       
       if (!result.success) {
@@ -169,7 +156,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     }
   };
   
-  // Modal animations
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -200,9 +186,7 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
             transition={{ duration: 0.3, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal header */}
             <div className="relative">
-              {/* Close button */}
               <button
                 className="absolute top-4 right-4 text-text-tertiary hover:text-text-primary transition-colors"
                 onClick={onClose}
@@ -210,7 +194,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
                 <Icon name="X" size={20} />
               </button>
               
-              {/* Tabs */}
               <div className="flex border-b border-border">
                 <button
                   className={`flex-1 py-4 text-center font-medium transition-colors ${
@@ -231,7 +214,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
               </div>
             </div>
             
-            {/* Modal body */}
             <div className="p-6">
               {activeTab === "login" ? (
                 <LoginForm
@@ -260,7 +242,6 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
   );
 };
 
-// Login Form Component
 const LoginForm = ({ form, handleChange, handleSubmit, isLoggingIn, error, fieldErrors }) => {
   return (
     <form onSubmit={handleSubmit}>
@@ -376,7 +357,6 @@ const LoginForm = ({ form, handleChange, handleSubmit, isLoggingIn, error, field
   );
 };
 
-// Signup Form Component
 const SignupForm = ({ form, handleChange, handleSubmit, isSigningUp, error, fieldErrors }) => {
   return (
     <form onSubmit={handleSubmit}>

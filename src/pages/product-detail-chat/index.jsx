@@ -15,7 +15,6 @@ const ProductDetailChat = () => {
   const [showNegotiationTools, setShowNegotiationTools] = useState(false);
   const chatRef = useRef(null);
 
-  // Mock product data
   const product = {
     id: "prod-12345",
     name: "Premium Organic Rice Seeds",
@@ -63,7 +62,6 @@ The seeds have been tested for germination rates exceeding 95% and are resistant
     tags: ["Organic", "Rice", "Seeds", "Basmati", "Premium"]
   };
 
-  // Check online status
   useEffect(() => {
     const handleOnlineStatus = () => {
       setIsOnline(navigator.onLine);
@@ -78,7 +76,6 @@ The seeds have been tested for germination rates exceeding 95% and are resistant
     };
   }, []);
 
-  // Scroll to chat when opened
   useEffect(() => {
     if (showChat && chatRef.current) {
       chatRef.current.scrollIntoView({ behavior: "smooth" });
@@ -99,7 +96,6 @@ The seeds have been tested for germination rates exceeding 95% and are resistant
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Offline notification */}
       <AnimatePresence>
         {!isOnline && (
           <motion.div
@@ -140,7 +136,6 @@ The seeds have been tested for germination rates exceeding 95% and are resistant
 
       <main className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left column - Product images and details */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -182,7 +177,6 @@ The seeds have been tested for germination rates exceeding 95% and are resistant
             </motion.div>
           </div>
 
-          {/* Right column - Product info and chat */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -309,7 +303,6 @@ The seeds have been tested for germination rates exceeding 95% and are resistant
               ) : null}
             </motion.div>
 
-            {/* Chat Interface */}
             <AnimatePresence>
               {showChat && (
                 <motion.div
@@ -388,7 +381,6 @@ The seeds have been tested for germination rates exceeding 95% and are resistant
         </div>
       </main>
 
-      {/* Offer Modal */}
       <AnimatePresence>
         {showOfferModal && (
           <OfferModal

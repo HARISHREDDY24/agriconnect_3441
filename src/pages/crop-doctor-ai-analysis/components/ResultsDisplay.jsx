@@ -37,7 +37,6 @@ const ResultsDisplay = ({ results, image, onAnalyzeAnother }) => {
             className="w-full h-full object-cover"
           />
           
-          {/* Highlight overlay showing detected areas */}
           <div className="absolute inset-0 pointer-events-none">
             <svg width="100%" height="100%" className="absolute inset-0">
               <motion.circle

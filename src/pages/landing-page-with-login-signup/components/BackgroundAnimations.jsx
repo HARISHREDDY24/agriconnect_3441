@@ -5,19 +5,15 @@ import Icon from "../../../components/AppIcon";
 const BackgroundAnimations = () => {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      {/* Floating clouds */}
       <FloatingClouds />
       
-      {/* Growing plants */}
       <GrowingPlants />
       
-      {/* Floating icons */}
       <FloatingIcons />
     </div>
   );
 };
 
-// Floating Clouds Component
 const FloatingClouds = () => {
   const clouds = [
     { id: 1, initialX: "10%", initialY: "15%", size: 80, duration: 120 },
@@ -54,7 +50,6 @@ const FloatingClouds = () => {
   );
 };
 
-// Growing Plants Component
 const GrowingPlants = () => {
   const plants = [
     { id: 1, position: "left-10 bottom-0", delay: 0 },
@@ -100,7 +95,6 @@ const GrowingPlants = () => {
   );
 };
 
-// Floating Icons Component
 const FloatingIcons = () => {
   const icons = [
     { id: 1, name: "Droplets", position: "left-1/5 top-1/4", size: 20, color: "text-water" },

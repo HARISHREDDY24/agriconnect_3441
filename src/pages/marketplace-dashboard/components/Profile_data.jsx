@@ -10,10 +10,9 @@ import {
     FaMapMarkerAlt,
     FaCalendarAlt
 } from 'react-icons/fa';
-import './Profile.css'; // Make sure to create and link this CSS file
+import './Profile.css'; 
 
 const Profile = () => {
-    // User data state
     const [userData, setUserData] = useState({
         name: "Harish Reddy",
         email: "harish@example.com",
@@ -33,7 +32,6 @@ const Profile = () => {
 
     const handleEditToggle = () => {
         if (isEditing) {
-            // Save changes
             setUserData(formData);
         }
         setIsEditing(!isEditing);
@@ -63,7 +61,6 @@ const Profile = () => {
                 </div>
 
                 <div className="profile-content">
-                    {/* Profile Picture and Stats Section */}
                     <div className="profile-sidebar">
                         <div className="profile-pic-container">
                             <img
@@ -107,7 +104,6 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* Profile Details Section */}
                     <div className="profile-details">
                         <div className="detail-section">
                             <h3 className="section-title">Personal Information</h3>

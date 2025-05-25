@@ -27,14 +27,12 @@ const ImageUploader = ({ onImageSelect, uploadProgress }) => {
   }, [isDragging]);
   
   const validateFile = (file) => {
-    // Check file type
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     if (!validTypes.includes(file.type)) {
       setError("Please upload a valid image file (JPEG, PNG, or WebP)");
       return false;
     }
     
-    // Check file size (max 10MB)
     if (file.size > 10 * 1024 * 1024) {
       setError("Image size should be less than 10MB");
       return false;

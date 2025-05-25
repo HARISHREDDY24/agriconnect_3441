@@ -191,7 +191,6 @@
     resize: vertical;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .profile-content {
         flex-direction: column;

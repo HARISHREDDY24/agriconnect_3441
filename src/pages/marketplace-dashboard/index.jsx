@@ -67,7 +67,6 @@ const Marketplace = () => {
       product.price <= filters.priceRange[1]
     );
 
-    // Apply search
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       result = result.filter(product =>
@@ -153,9 +152,7 @@ const Marketplace = () => {
             </motion.div>
           </aside>
 
-          {/* Main Content */}
           <div className="w-full lg:w-3/4">
-            {/* Search Bar */}
             <div className="mb-6">
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
@@ -165,7 +162,6 @@ const Marketplace = () => {
               </motion.div>
             </div>
 
-            {/* Error State */}
             {error && (
               <motion.div
                 initial={{ opacity: 0 }}

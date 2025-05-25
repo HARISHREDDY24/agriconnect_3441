@@ -10,23 +10,19 @@ const ChatInterface = ({ productId, sellerId, isOnline }) => {
   const [pendingMessages, setPendingMessages] = useState([]);
   const messagesEndRef = useRef(null);
   
-  // Mock user data
   const currentUser = {
     id: "user-123",
     name: "You",
     avatar: "https://randomuser.me/api/portraits/women/44.jpg"
   };
 
-  // Mock seller data
   const seller = {
     id: sellerId,
     name: "Rajesh Kumar",
     avatar: "https://randomuser.me/api/portraits/men/32.jpg"
   };
 
-  // Initial messages
   useEffect(() => {
-    // Simulate loading messages
     setTimeout(() => {
       setMessages([
         {
@@ -40,12 +36,10 @@ const ChatInterface = ({ productId, sellerId, isOnline }) => {
     }, 1000);
   }, [seller.id]);
 
-  // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Simulate seller typing
   useEffect(() => {
     if (messages.length > 0 && messages[messages.length - 1].senderId === currentUser.id) {
       setIsTyping(true);
@@ -53,7 +47,6 @@ const ChatInterface = ({ productId, sellerId, isOnline }) => {
       const typingTimeout = setTimeout(() => {
         setIsTyping(false);
         
-        // Add seller response
         const responses = [
           "Yes, these are premium quality organic rice seeds. They have a germination rate of over 95%.",
           "The seeds are certified organic and perfect for sustainable farming.",
@@ -77,11 +70,9 @@ const ChatInterface = ({ productId, sellerId, isOnline }) => {
     }
   }, [messages, currentUser.id, seller.id]);
 
-  // Process pending messages when coming back online
   useEffect(() => {
     if (isOnline && pendingMessages.length > 0) {
       const processPendingMessages = async () => {
-        // Simulate sending pending messages
         for (const pendingMsg of pendingMessages) {
           setMessages(prev => 
             prev.map(msg => 
@@ -91,7 +82,6 @@ const ChatInterface = ({ productId, sellerId, isOnline }) => {
             )
           );
           
-          // Simulate network delay
           await new Promise(resolve => setTimeout(resolve, 500));
         }
         
