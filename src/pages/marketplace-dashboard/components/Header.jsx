@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Icon from "../../../components/AppIcon";
+import Icon from "components/AppIcon";
+import LoginModal from "pages/landing-page-with-login-signup/components/LoginModal";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -15,6 +18,13 @@ const Header = () => {
   const toggleNotifications = () => {
     setIsNotificationsOpen(!isNotificationsOpen);
     if (isMenuOpen) setIsMenuOpen(false);
+  };
+
+  const handleSignOut = () => {
+    // Add actual authentication logic here
+    localStorage.removeItem("authToken");
+    setIsMenuOpen(false);
+    navigate("/login");
   };
 
   return (
@@ -35,31 +45,40 @@ const Header = () => {
             </h1>
           </Link>
 
-          {/* Navigation for desktop */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link
+            <NavLink
               to="/landing-page-with-login-signup"
-              className="text-text-secondary hover:text-primary transition-colors"
+              className={({ isActive }) =>
+                `text-text-secondary hover:text-primary transition-colors ${isActive ? "text-primary font-medium" : ""
+                }`
+              }
             >
               Home
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/marketplace-dashboard"
-              className="text-primary font-medium"
-              aria-current="page"
+              className={({ isActive }) =>
+                `text-text-secondary hover:text-primary transition-colors ${isActive ? "text-primary font-medium" : ""
+                }`
+              }
             >
               Marketplace
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/crop-doctor-ai-analysis"
-              className="text-text-secondary hover:text-primary transition-colors"
+              className={({ isActive }) =>
+                `text-text-secondary hover:text-primary transition-colors ${isActive ? "text-primary font-medium" : ""
+                }`
+              }
             >
               Crop Doctor
-            </Link>
+            </NavLink>
           </nav>
 
-          {/* User actions */}
+          {/* User Actions */}
           <div className="flex items-center gap-2">
+            {/* Notifications */}
             <div className="relative">
               <button
                 onClick={toggleNotifications}
@@ -70,7 +89,6 @@ const Header = () => {
                 <span className="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full"></span>
               </button>
 
-              {/* Notifications dropdown */}
               {isNotificationsOpen && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -92,7 +110,12 @@ const Header = () => {
                             <Icon
                               name={notification.icon}
                               size={20}
-                              className={`text-${notification.iconColor}`}
+                              className={
+                                notification.iconColor === "primary" ? "text-primary" :
+                                  notification.iconColor === "info" ? "text-info" :
+                                    notification.iconColor === "success" ? "text-success" :
+                                      "text-warning"
+                              }
                             />
                           </div>
                           <div>
@@ -116,6 +139,7 @@ const Header = () => {
               )}
             </div>
 
+            {/* User Menu */}
             <div className="relative">
               <button
                 onClick={toggleMenu}
@@ -123,15 +147,13 @@ const Header = () => {
                 aria-label="User menu"
               >
                 <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center">
-                  <span className="text-sm font-medium">RS</span>
+                  <span className="text-sm font-medium">H</span>
                 </div>
                 <span className="hidden md:inline text-sm font-medium">
-                  Rahul Singh
-                </span>
+HARISH                </span>
                 <Icon name="ChevronDown" size={16} />
               </button>
 
-              {/* User menu dropdown */}
               {isMenuOpen && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -140,9 +162,9 @@ const Header = () => {
                   className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg overflow-hidden z-30"
                 >
                   <div className="p-3 border-b border-border">
-                    <p className="font-medium">Rahul Singh</p>
+                    <p className="font-medium">HARISH</p>
                     <p className="text-xs text-text-secondary">
-                      rahul.singh@example.com
+                      harish.singh@example.com
                     </p>
                   </div>
                   <div>
@@ -150,13 +172,17 @@ const Header = () => {
                       <Link
                         key={item.label}
                         to={item.path}
+                        onClick={() => setIsMenuOpen(false)}
                         className="flex items-center gap-2 p-3 hover:bg-surface transition-colors"
                       >
                         <Icon name={item.icon} size={16} />
                         <span>{item.label}</span>
                       </Link>
                     ))}
-                    <button className="flex items-center gap-2 p-3 hover:bg-surface transition-colors text-danger w-full text-left">
+                    <button
+                      onClick={handleSignOut}
+                      className="flex items-center gap-2 p-3 hover:bg-surface transition-colors text-danger w-full text-left"
+                    >
                       <Icon name="LogOut" size={16} />
                       <span>Sign Out</span>
                     </button>
@@ -165,19 +191,22 @@ const Header = () => {
               )}
             </div>
 
-            {/* Mobile menu button */}
+            {/* Mobile Menu Button */}
             <button
               className="p-2 rounded-md md:hidden hover:bg-surface transition-colors"
-              onClick={toggleMenu}
+              onClick={() => {
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+                setIsMenuOpen(false);
+              }}
               aria-label="Menu"
             >
-              <Icon name={isMenuOpen ? "X" : "Menu"} size={20} />
+              <Icon name={isMobileMenuOpen ? "X" : "Menu"} size={20} />
             </button>
           </div>
         </div>
 
-        {/* Mobile navigation */}
-        {isMenuOpen && (
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -185,25 +214,36 @@ const Header = () => {
             className="md:hidden mt-3 py-2 border-t border-border"
           >
             <nav className="flex flex-col gap-2">
-              <Link
+              <NavLink
                 to="/landing-page-with-login-signup"
-                className="p-2 hover:bg-surface rounded-md transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `p-2 hover:bg-surface rounded-md transition-colors ${isActive ? "bg-surface text-primary" : ""
+                  }`
+                }
               >
                 Home
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/marketplace-dashboard"
-                className="p-2 bg-surface text-primary rounded-md"
-                aria-current="page"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `p-2 hover:bg-surface rounded-md transition-colors ${isActive ? "bg-surface text-primary" : ""
+                  }`
+                }
               >
                 Marketplace
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/crop-doctor-ai-analysis"
-                className="p-2 hover:bg-surface rounded-md transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `p-2 hover:bg-surface rounded-md transition-colors ${isActive ? "bg-surface text-primary" : ""
+                  }`
+                }
               >
                 Crop Doctor
-              </Link>
+              </NavLink>
             </nav>
           </motion.div>
         )}
@@ -212,7 +252,7 @@ const Header = () => {
   );
 };
 
-// Mock data
+// Mock Data
 const notifications = [
   {
     id: 1,
@@ -223,7 +263,7 @@ const notifications = [
   },
   {
     id: 2,
-    title: "Your listing \'Organic Wheat\' has 3 new inquiries",
+    title: "Your listing 'Organic Wheat' has 3 new inquiries",
     time: "2 hours ago",
     icon: "MessageSquare",
     iconColor: "info",
@@ -245,10 +285,128 @@ const notifications = [
 ];
 
 const menuItems = [
-  { label: "Profile", icon: "User", path: "#" },
-  { label: "My Listings", icon: "Package", path: "#" },
-  { label: "Orders", icon: "ShoppingCart", path: "#" },
-  { label: "Settings", icon: "Settings", path: "#" },
+  { label: "Profile", icon: "User", path: "/profile" },
+  { label: "My Listings", icon: "Package", path: "/my-listings" },
+  { label: "Orders", icon: "ShoppingCart", path: "/orders" },
+  { label: "Settings", icon: "Settings", path: "/settings" },
 ];
 
 export default Header;
+
+
+
+
+
+//  import React, { useState } from "react";
+//  import { Link } from "react-router-dom";
+//  import { motion } from "framer-motion";
+//  import Icon from "../../../components/AppIcon";
+
+// const Header = () => {
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
+//   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+//   const [userName, setUserName] = useState(localStorage.getItem("signupName") || "");
+//   const [userEmail, setUserEmail] = useState(localStorage.getItem("signupEmail") || "");
+
+//   const toggleMenu = () => {
+//     setIsMenuOpen(!isMenuOpen);
+//     if (isNotificationsOpen) setIsNotificationsOpen(false);
+//   };
+
+//   const toggleNotifications = () => {
+//     setIsNotificationsOpen(!isNotificationsOpen);
+//     if (isMenuOpen) setIsMenuOpen(false);
+//   };
+
+//   const handleSignOut = () => {
+//     // Clear user data from localStorage
+//     localStorage.removeItem("signupName");
+//     localStorage.removeItem("signupEmail");
+//     localStorage.removeItem("signupUserType");
+//     // Reload the page to reset the application state
+//     window.location.reload();
+//   };
+
+//   // Get user initials
+//   const getInitials = () => {
+//     if (!userName) return "GU";
+//     const names = userName.split(" ");
+//     return names
+//       .map((name) => name[0])
+//       .join("")
+//       .toUpperCase();
+//   };
+
+//   return (
+//     <header className="bg-white shadow-sm sticky top-0 z-20">
+//       <div className="container mx-auto px-4 py-3">
+//         <div className="flex justify-between items-center">
+//           {/* Logo and title - unchanged */}
+
+//           {/* User actions */}
+//           <div className="flex items-center gap-2">
+//             {/* Notifications dropdown - unchanged */}
+
+//             <div className="relative">
+//               <button
+//                 onClick={toggleMenu}
+//                 className="flex items-center gap-2 p-1 rounded-full hover:bg-surface transition-colors"
+//                 aria-label="User menu"
+//               >
+//                 <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center">
+//                   <span className="text-sm font-medium">{getInitials()}</span>
+//                 </div>
+//                 <span className="hidden md:inline text-sm font-medium">
+//                   {userName || "Guest"}
+//                 </span>
+//                 <Icon name="ChevronDown" size={16} />
+//               </button>
+
+//               {/* User menu dropdown */}
+//               {isMenuOpen && (
+//                 <motion.div
+//                   initial={{ opacity: 0, y: 10 }}
+//                   animate={{ opacity: 1, y: 0 }}
+//                   exit={{ opacity: 0, y: 10 }}
+//                   className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg overflow-hidden z-30"
+//                 >
+//                   <div className="p-3 border-b border-border">
+//                     <p className="font-medium">{userName || "Guest User"}</p>
+//                     <p className="text-xs text-text-secondary">
+//                       {userEmail || "No email available"}
+//                     </p>
+//                   </div>
+//                   <div>
+//                     {menuItems.map((item) => (
+//                       <Link
+//                         key={item.label}
+//                         to={item.path}
+//                         className="flex items-center gap-2 p-3 hover:bg-surface transition-colors"
+//                       >
+//                         <Icon name={item.icon} size={16} />
+//                         <span>{item.label}</span>
+//                       </Link>
+//                     ))}
+//                     <button
+//                       className="flex items-center gap-2 p-3 hover:bg-surface transition-colors text-danger w-full text-left"
+//                       onClick={handleSignOut}
+//                     >
+//                       <Icon name="LogOut" size={16} />
+//                       <span>Sign Out</span>
+//                     </button>
+//                   </div>
+//                 </motion.div>
+//               )}
+//             </div>
+
+//             {/* Mobile menu button - unchanged */}
+//           </div>
+//         </div>
+
+//         {/* Mobile navigation - unchanged */}
+//       </div>
+//     </header>
+//   );
+// };
+
+// // Rest of the code (mock data, exports) remains the same

@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Icon from "../../../components/AppIcon";
 
 const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignup }) => {
-  // Form states
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
@@ -16,6 +15,14 @@ const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignu
     confirmPassword: "",
     userType: "farmer",
   });
+
+  useEffect(() => {
+    const name = localStorage.getItem("signupName");
+    if (name) {
+      setSignupForm((prev) => ({ ...prev, name }));
+    }
+  }, []);
+  
   
   // Error states
   const [loginError, setLoginError] = useState("");
@@ -535,3 +542,229 @@ const SignupForm = ({ form, handleChange, handleSubmit, isSigningUp, error, fiel
 };
 
 export default LoginModal;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState, useEffect } from "react";
+//  import { motion, AnimatePresence } from "framer-motion";
+//  import Icon from "../../../components/AppIcon";
+// const LoginModal = ({ isOpen, onClose, activeTab, setActiveTab, onLogin, onSignup }) => {
+//   // Initialize form state from localStorage
+//   const [loginForm, setLoginForm] = useState({
+//     email: "",
+//     password: "",
+//   });
+
+//   const [signupForm, setSignupForm] = useState({
+//     name: localStorage.getItem("signupName") || "",
+//     email: "",
+//     password: "",
+//     confirmPassword: "",
+//     userType: localStorage.getItem("signupUserType") || "farmer",
+//   });
+
+//   // Error states
+//   const [loginError, setLoginError] = useState("");
+//   const [signupError, setSignupError] = useState("");
+//   const [fieldErrors, setFieldErrors] = useState({});
+
+//   // Loading states
+//   const [isLoggingIn, setIsLoggingIn] = useState(false);
+//   const [isSigningUp, setIsSigningUp] = useState(false);
+
+//   // Close modal on escape key
+//   useEffect(() => {
+//     const handleEsc = (e) => {
+//       if (e.key === "Escape") onClose();
+//     };
+
+//     window.addEventListener("keydown", handleEsc);
+//     return () => window.removeEventListener("keydown", handleEsc);
+//   }, [onClose]);
+
+//   // Handle login form change
+//   const handleLoginChange = (e) => {
+//     const { name, value } = e.target;
+//     setLoginForm((prev) => ({ ...prev, [name]: value }));
+
+//     if (loginError) setLoginError("");
+//     if (fieldErrors[name]) {
+//       setFieldErrors((prev) => {
+//         const newErrors = { ...prev };
+//         delete newErrors[name];
+//         return newErrors;
+//       });
+//     }
+//   };
+
+//   // Handle signup form change with localStorage
+//   const handleSignupChange = (e) => {
+//     const { name, value } = e.target;
+//     setSignupForm((prev) => ({ ...prev, [name]: value }));
+
+//     // Save to localStorage for specific fields
+//     if (name === "name") {
+//       localStorage.setItem("signupName", value);
+//     }
+//     if (name === "userType") {
+//       localStorage.setItem("signupUserType", value);
+//     }
+
+//     if (signupError) setSignupError("");
+//     if (fieldErrors[name]) {
+//       setFieldErrors((prev) => {
+//         const newErrors = { ...prev };
+//         delete newErrors[name];
+//         return newErrors;
+//       });
+//     }
+//   };
+
+//   // Validate forms (same as before)
+//   const validateLoginForm = () => {/* ... */ };
+//   const validateSignupForm = () => {/* ... */ };
+
+//   // Handle login submission (same as before)
+//   const handleLoginSubmit = async (e) => {/* ... */ };
+
+//   // Handle signup submission with localStorage cleanup
+//   const handleSignupSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!validateSignupForm()) return;
+
+//     setIsSigningUp(true);
+
+//     try {
+//       const result = await onSignup(signupForm);
+
+//       if (result.success) {
+//         // Clear stored values after successful signup
+//         localStorage.removeItem("signupName");
+//         localStorage.removeItem("signupUserType");
+//       } else {
+//         setSignupError(result.error || "Failed to create account");
+//       }
+//     } catch (error) {
+//       setSignupError("An error occurred during signup. Please try again.");
+//       console.error("Signup error:", error);
+//     } finally {
+//       setIsSigningUp(false);
+//     }
+//   };
+
+//   // Rest of the component remains the same
+//   return (
+//     <AnimatePresence>
+//       {isOpen && (
+//         <motion.div
+//           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+//           variants={backdropVariants}
+//           initial="hidden"
+//           animate="visible"
+//           exit="hidden"
+//           onClick={onClose}
+//         >
+//           {/* ... rest of the modal JSX ... */}
+//         </motion.div>
+//       )}
+//     </AnimatePresence>
+//   );
+// };
+
+// // Signup Form Component with persisted values
+// const SignupForm = ({ form, handleChange, handleSubmit, isSigningUp, error, fieldErrors }) => {
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <h2 className="text-h3 font-bold text-text-primary mb-6">Create an Account</h2>
+
+//       {/* Error message */}
+//       {error && (
+//         <div className="mb-4 p-3 bg-danger bg-opacity-10 border border-danger border-opacity-20 rounded-md text-danger text-sm">
+//           <div className="flex items-start">
+//             <Icon name="AlertCircle" size={16} className="mr-2 mt-0.5 flex-shrink-0" />
+//             <span>{error}</span>
+//           </div>
+//         </div>
+//       )}
+
+//       <div className="space-y-4">
+//         {/* Name input with persisted value */}
+//         <div>
+//           <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-1">
+//             Full Name
+//           </label>
+//           <input
+//             type="text"
+//             id="name"
+//             name="name"
+//             value={form.name}
+//             onChange={handleChange}
+//             className={`input w-full ${fieldErrors.name ? "border-danger focus:ring-danger" : ""}`}
+//             placeholder="John Doe"
+//           />
+//           {fieldErrors.name && (
+//             <p className="mt-1 text-sm text-danger">{fieldErrors.name}</p>
+//           )}
+//         </div>
+
+//         {/* Other fields remain the same */}
+
+//         {/* User type selection with persisted value */}
+//         <div>
+//           <label className="block text-sm font-medium text-text-secondary mb-1">
+//             I am a
+//           </label>
+//           <div className="grid grid-cols-2 gap-3">
+//             <label className={`flex items-center p-3 border rounded-md cursor-pointer transition-colors ${form.userType === "farmer" ? "border-primary bg-primary bg-opacity-5" : "border-border hover:border-primary hover:bg-primary hover:bg-opacity-5"
+//               }`}>
+//               <input
+//                 type="radio"
+//                 name="userType"
+//                 value="farmer"
+//                 checked={form.userType === "farmer"}
+//                 onChange={handleChange}
+//                 className="sr-only"
+//               />
+//               <Icon name="Wheat" size={20} className={form.userType === "farmer" ? "text-primary" : "text-text-tertiary"} />
+//               <span className={`ml-2 ${form.userType === "farmer" ? "text-primary font-medium" : "text-text-secondary"}`}>
+//                 Farmer
+//               </span>
+//             </label>
+
+//             <label className={`flex items-center p-3 border rounded-md cursor-pointer transition-colors ${form.userType === "buyer" ? "border-primary bg-primary bg-opacity-5" : "border-border hover:border-primary hover:bg-primary hover:bg-opacity-5"
+//               }`}>
+//               <input
+//                 type="radio"
+//                 name="userType"
+//                 value="buyer"
+//                 checked={form.userType === "buyer"}
+//                 onChange={handleChange}
+//                 className="sr-only"
+//               />
+//               <Icon name="ShoppingCart" size={20} className={form.userType === "buyer" ? "text-primary" : "text-text-tertiary"} />
+//               <span className={`ml-2 ${form.userType === "buyer" ? "text-primary font-medium" : "text-text-secondary"}`}>
+//                 Buyer
+//               </span>
+//             </label>
+//           </div>
+//         </div>
+
+//         {/* Rest of the signup form */}
+//       </div>
+//     </form>
+//   );
+// };
+
+// export default LoginModal;

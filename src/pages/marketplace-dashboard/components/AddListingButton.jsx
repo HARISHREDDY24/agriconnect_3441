@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Icon from "../../../components/AppIcon";
 
-const AddListingButton = ({ showForm, onToggle }) => {
+const AddListingButton = ({ showForm, onToggle, onAddProduct }) => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -12,21 +12,43 @@ const AddListingButton = ({ showForm, onToggle }) => {
     description: "",
   });
   const [imagePreview, setImagePreview] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "Product name is required";
+    if (!formData.category) newErrors.category = "Category is required";
+    if (!formData.price) newErrors.price = "Price is required";
+    if (!formData.quantity) newErrors.quantity = "Quantity is required";
+    if (!formData.description.trim()) newErrors.description = "Description is required";
+    if (!imagePreview) newErrors.image = "Product image is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setErrors(prev => ({ ...prev, [name]: "" }));
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        setErrors(prev => ({ ...prev, image: "Please upload an image file" }));
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, image: "File size should be less than 5MB" }));
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
+        setErrors(prev => ({ ...prev, image: "" }));
       };
       reader.readAsDataURL(file);
     }
@@ -34,10 +56,19 @@ const AddListingButton = ({ showForm, onToggle }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app, this would submit the form data to an API
-    console.log("Form submitted:", formData);
-    
-    // Reset form
+    if (!validateForm()) return;
+
+    const newProduct = {
+      ...formData,
+      price: Number(formData.price),
+      quantity: Number(formData.quantity),
+    };
+
+    onAddProduct(newProduct, imagePreview);
+    resetForm();
+  };
+
+  const resetForm = () => {
     setFormData({
       name: "",
       category: "",
@@ -47,22 +78,22 @@ const AddListingButton = ({ showForm, onToggle }) => {
       description: "",
     });
     setImagePreview(null);
+    setErrors({});
     onToggle();
   };
 
   return (
     <>
-      {/* Floating action button */}
       <motion.button
         className="fixed bottom-20 right-6 z-20 bg-primary text-white rounded-full shadow-lg p-4 flex items-center justify-center"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={onToggle}
         initial={{ scale: 0, opacity: 0 }}
-        animate={{ 
-          scale: 1, 
+        animate={{
+          scale: 1,
           opacity: 1,
-          transition: { 
+          transition: {
             type: "spring",
             stiffness: 260,
             damping: 20
@@ -72,33 +103,9 @@ const AddListingButton = ({ showForm, onToggle }) => {
         <Icon name={showForm ? "X" : "Plus"} size={24} />
       </motion.button>
 
-      {/* Pulsing effect behind the button */}
-      <AnimatePresence>
-        {!showForm && (
-          <motion.div
-            className="fixed bottom-20 right-6 z-10 bg-primary rounded-full"
-            initial={{ scale: 1, opacity: 0.5 }}
-            animate={{ 
-              scale: [1, 1.2, 1],
-              opacity: [0.5, 0.2, 0.5],
-              transition: { 
-                duration: 2,
-                repeat: Infinity,
-                repeatType: "loop"
-              }
-            }}
-            exit={{ scale: 0, opacity: 0 }}
-          >
-            <div className="w-12 h-12"></div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Add listing form */}
       <AnimatePresence>
         {showForm && (
           <>
-            {/* Overlay */}
             <motion.div
               className="fixed inset-0 bg-black bg-opacity-50 z-30"
               initial={{ opacity: 0 }}
@@ -107,7 +114,6 @@ const AddListingButton = ({ showForm, onToggle }) => {
               onClick={onToggle}
             />
 
-            {/* Form panel */}
             <motion.div
               className="fixed bottom-0 left-0 right-0 bg-white rounded-t-xl shadow-lg z-40 overflow-hidden"
               initial={{ y: "100%" }}
@@ -118,10 +124,7 @@ const AddListingButton = ({ showForm, onToggle }) => {
               <div className="p-4 border-b border-border">
                 <div className="flex justify-between items-center">
                   <h2 className="text-h4 font-medium">Add New Listing</h2>
-                  <button
-                    onClick={onToggle}
-                    className="p-2 rounded-full hover:bg-surface transition-colors"
-                  >
+                  <button onClick={resetForm} className="p-2 rounded-full hover:bg-surface">
                     <Icon name="X" size={20} />
                   </button>
                 </div>
@@ -130,35 +133,29 @@ const AddListingButton = ({ showForm, onToggle }) => {
               <div className="p-4 max-h-[80vh] overflow-y-auto">
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    {/* Name Field */}
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-1">
-                        Product Name*
-                      </label>
+                      <label className="block text-sm font-medium mb-1">Product Name*</label>
                       <input
-                        type="text"
-                        id="name"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        required
-                        className="input w-full"
-                        placeholder="e.g. Organic Basmati Rice"
+                        className={`input w-full ${errors.name ? "border-danger" : ""}`}
+                        placeholder="Organic Basmati Rice"
                       />
+                      {errors.name && <p className="text-danger text-xs mt-1">{errors.name}</p>}
                     </div>
 
+                    {/* Category Field */}
                     <div>
-                      <label htmlFor="category" className="block text-sm font-medium text-text-secondary mb-1">
-                        Category*
-                      </label>
+                      <label className="block text-sm font-medium mb-1">Category*</label>
                       <select
-                        id="category"
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
-                        required
-                        className="input w-full"
+                        className={`input w-full ${errors.category ? "border-danger" : ""}`}
                       >
-                        <option value="">Select a category</option>
+                        <option value="">Select category</option>
                         <option value="grains">Grains</option>
                         <option value="vegetables">Vegetables</option>
                         <option value="fruits">Fruits</option>
@@ -166,53 +163,45 @@ const AddListingButton = ({ showForm, onToggle }) => {
                         <option value="spices">Spices</option>
                         <option value="other">Other</option>
                       </select>
+                      {errors.category && <p className="text-danger text-xs mt-1">{errors.category}</p>}
                     </div>
 
+                    {/* Price Field */}
                     <div>
-                      <label htmlFor="price" className="block text-sm font-medium text-text-secondary mb-1">
-                        Price (₹)*
-                      </label>
+                      <label className="block text-sm font-medium mb-1">Price (₹)*</label>
                       <input
                         type="number"
-                        id="price"
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
-                        required
-                        min="0"
-                        className="input w-full"
-                        placeholder="e.g. 1200"
+                        className={`input w-full ${errors.price ? "border-danger" : ""}`}
+                        placeholder="1200"
+                        min="1"
                       />
+                      {errors.price && <p className="text-danger text-xs mt-1">{errors.price}</p>}
                     </div>
 
+                    {/* Quantity & Unit Fields */}
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label htmlFor="quantity" className="block text-sm font-medium text-text-secondary mb-1">
-                          Quantity*
-                        </label>
+                        <label className="block text-sm font-medium mb-1">Quantity*</label>
                         <input
                           type="number"
-                          id="quantity"
                           name="quantity"
                           value={formData.quantity}
                           onChange={handleChange}
-                          required
+                          className={`input w-full ${errors.quantity ? "border-danger" : ""}`}
+                          placeholder="50"
                           min="1"
-                          className="input w-full"
-                          placeholder="e.g. 50"
                         />
+                        {errors.quantity && <p className="text-danger text-xs mt-1">{errors.quantity}</p>}
                       </div>
-
                       <div>
-                        <label htmlFor="unit" className="block text-sm font-medium text-text-secondary mb-1">
-                          Unit*
-                        </label>
+                        <label className="block text-sm font-medium mb-1">Unit*</label>
                         <select
-                          id="unit"
                           name="unit"
                           value={formData.unit}
                           onChange={handleChange}
-                          required
                           className="input w-full"
                         >
                           <option value="kg">Kilogram (kg)</option>
@@ -225,34 +214,28 @@ const AddListingButton = ({ showForm, onToggle }) => {
                       </div>
                     </div>
 
+                    {/* Description Field */}
                     <div className="md:col-span-2">
-                      <label htmlFor="description" className="block text-sm font-medium text-text-secondary mb-1">
-                        Description*
-                      </label>
+                      <label className="block text-sm font-medium mb-1">Description*</label>
                       <textarea
-                        id="description"
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        required
+                        className={`input w-full ${errors.description ? "border-danger" : ""}`}
                         rows="3"
-                        className="input w-full"
-                        placeholder="Describe your product, including quality, origin, etc."
-                      ></textarea>
+                        placeholder="Describe your product..."
+                      />
+                      {errors.description && <p className="text-danger text-xs mt-1">{errors.description}</p>}
                     </div>
 
+                    {/* Image Upload */}
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-text-secondary mb-1">
-                        Product Image
-                      </label>
-                      <div className="border-2 border-dashed border-border rounded-lg p-4 text-center">
+                      <label className="block text-sm font-medium mb-1">Product Image*</label>
+                      <div className={`border-2 border-dashed rounded-lg p-4 ${errors.image ? "border-danger" : "border-border"
+                        }`}>
                         {imagePreview ? (
                           <div className="relative">
-                            <img
-                              src={imagePreview}
-                              alt="Preview"
-                              className="h-48 mx-auto object-contain"
-                            />
+                            <img src={imagePreview} alt="Preview" className="h-48 mx-auto object-contain" />
                             <button
                               type="button"
                               onClick={() => setImagePreview(null)}
@@ -279,13 +262,14 @@ const AddListingButton = ({ showForm, onToggle }) => {
                           onChange={handleImageChange}
                         />
                       </div>
+                      {errors.image && <p className="text-danger text-xs mt-1">{errors.image}</p>}
                     </div>
                   </div>
 
                   <div className="flex justify-end gap-3 mt-6">
                     <button
                       type="button"
-                      onClick={onToggle}
+                      onClick={resetForm}
                       className="btn btn-secondary py-2 px-6"
                     >
                       Cancel
