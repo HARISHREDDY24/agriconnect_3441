@@ -168,6 +168,7 @@ HARISH                </span>
                     </p>
                   </div>
                   <div>
+                    <Link to="/profile_data" className="flex items-center gap-2 p-3 hover:bg-surface transition-colors" ><Icon name={"User"} size={16} /> Profile </Link>
                     {menuItems.map((item) => (
                       <Link
                         key={item.label}
@@ -285,7 +286,7 @@ const notifications = [
 ];
 
 const menuItems = [
-  { label: "Profile", icon: "User", path: "/profile" },
+  // { label: "Profile", icon: "User", path: "/profile" },
   { label: "My Listings", icon: "Package", path: "/my-listings" },
   { label: "Orders", icon: "ShoppingCart", path: "/orders" },
   { label: "Settings", icon: "Settings", path: "/settings" },
